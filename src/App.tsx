@@ -14,11 +14,11 @@ function App() {
   })
 
   return (
-    <div className=''>
+    <div className='w-full h-full'>
 
       {token === null ? 
         <UserRegistration setToken={setToken}/> :
-        <MainPage/>
+        <MainPage />
       }
 
 

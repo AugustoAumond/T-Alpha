@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
-import { api } from "../../axios/axios";
+import { api } from "../../../materials/axios/axios";
 import { CleanForms} from "./cleanForms";
 
+import { FaIdCard, FaLock, FaLockOpen, FaPhone, FaUser } from "react-icons/fa";
+
 import {IMaskInput } from "react-imask";
+import { MdEmail } from "react-icons/md";
+
+import Input from "../../../materials/input/input";
+import Button from "../../../materials/button/button";
+import CreateNewUserModal from "./modals/createNewUserModal";
+import LoginUserModal from "./modals/loginUserModal";
 
 interface token {
     setToken: (e: string) => void;
@@ -17,6 +25,7 @@ export function UserRegistration({
     const [mail, setMail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [lock, setLock] = useState(true)
 
     const [error, setError] = useState<string>('')
 
@@ -70,7 +79,6 @@ export function UserRegistration({
             return (setError('Password deve conter no mínimo 6 números!'));
         }
     
-
         await api.post('/api/auth/register',{
             name, 
             taxNumber,
@@ -97,13 +105,10 @@ export function UserRegistration({
             return (setError('CPF incorreto!'));
         }
 
-
         if (password?.toString().length < 6){
             return (setError('Password deve conter no mínimo 6 números!'));
         }
         
-
-
         await api.post('/api/auth/login',{
             taxNumber,
             password
@@ -113,7 +118,7 @@ export function UserRegistration({
 
             setTimeout(()=>{
                 localStorage.removeItem('token')    
-            }, 60000 * 15)
+            }, 600000)
         })
         .catch(function (error) {
             // handle error
@@ -122,124 +127,40 @@ export function UserRegistration({
     }
 
     return (
-        <div className="bg-primaryColor  w-screen h-screen flex items-center justify-center p-5"> 
+        <div className="bg-primaryColor h-full flex items-center justify-center p-18"> 
             {login === true ?
-                <main className="w-full h-full max-w-[500px] max-h-[500px] bg-terciaryColor rounded-lg p-6 flex flex-col items-center gap-8">
-                    <p className="text-2xl text-primaryColor">
-                        FAÇA SEU LOGIN                
-                    </p>
-                
-                <div className="flex w-full items-center justify-center gap-4">
-
-                    <div className="flex w-full items-center justify-center gap-6">
-                        <button onClick={setLoginTrue} className="text-lg text-primaryColor">
-                            <strong>
-                                SIGN IN
-                            </strong>
-
-                            {login === true && <div className="border-b-2 border-primaryColor"></div>}
-                        </button>
-
-                        <button onClick={setLoginFalse} className="text-lg text-primaryColor">
-                            SIGN UP
-                        </button>
-                    </div>
-                </div>
-
-
-                <div className="flex flex-col w-full gap-4">
-                    <div className="flex flex-col gap-2 ">
-                        <p className="text-lg text-primaryColor">CPF</p>
-                        <IMaskInput value={taxNumber}  onChange={(e) => setTaxNumber(e.currentTarget.value)} mask={'000.000.000-00'}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="text" maxLength={14} placeholder="Digite seu usuário" />
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                        <p className="text-lg text-primaryColor">PASSWORD</p>
-                        <input value={password}  onChange={(e) => setPassword(e.currentTarget.value)} className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="password" placeholder="Digite seu usuário" />
-                    </div>
-                </div> 
-
-                <div className="flex flex-col gap-2 text-center">
-                    <p className="text-2xl text-red-900">{error}</p>
-                </div>
-
-
-                <div className="flex w-full items-center justify-center gap-4">
-                    <div className="flex w-full items-center justify-center gap-4">
-                        <button onClick={() => LoginUser()} className="border-2 border-primaryColor rounded-lg px-3 py-2 text-primaryColor hover:bg-secundaryColor">
-                            CONFIRMAR
-                        </button>
-
-                        <button className="border-2 border-primaryColor rounded-lg px-3 py-2 text-primaryColor hover:bg-secundaryColor">
-                            CANCELAR
-                        </button>
-                    </div>
-                </div>
-            </main> :
-
-            <main className="w-full h-full max-w-[500px] max-h-[800PX] bg-terciaryColor rounded-lg p-6 flex flex-col items-center gap-8">
-                <p className="text-2xl text-primaryColor">
-                    CRIE SUA CONTA              
-                </p>
-
-                <div className="flex w-full items-center justify-center gap-4">
-
-                    <div className="flex w-full items-center justify-center gap-6">
-                        <button onClick={setLoginTrue} className="text-lg text-primaryColor">
-                            SIGN IN
-                        </button>
-
-                        <button onClick={setLoginFalse} className="text-lg text-primaryColor">
-                            <strong> SIGN UP </strong>
-                            <div className="border-b-2 border-primaryColor"></div>
-                        </button>
-                    </div>
-                </div>
-
-
-                <div className="flex flex-col w-full gap-4">
-                    <div className="flex flex-col gap-2 ">
-                        <p className="text-lg text-primaryColor">NOME:</p>
-                        <input value={name} onChange={(e) => setName(e.target.value)} className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="text" placeholder="Digite seu nome" />
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                        <p className="text-lg text-primaryColor">CPF:</p>
-                        <IMaskInput type="text" value={taxNumber} onChange={(e) => setTaxNumber(e.currentTarget.value)}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" maxLength={14} mask={'000.000.000-00'}  placeholder="000.000.000-00" />
-                    </div>
-
-                    <div className="flex flex-col gap-2 ">
-                        <p className="text-lg text-primaryColor">EMAIL:</p>
-                        <input value={mail} onChange={(e) => setMail(e.target.value)} className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="text" placeholder="Digite seu email" />
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                        <p className="text-lg text-primaryColor">TELEFONE:</p>
-                        <IMaskInput value={phone} onChange={(e) => setPhone(e.currentTarget.value)}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="text" maxLength={16} mask={'(00) 0 0000-0000'} placeholder="(00) 0 0000 0000" />
-                    </div>
-
-                    <div className="flex flex-col gap-2 ">
-                        <p className="text-lg text-primaryColor">PASSWORD:</p>
-                        <input value={password} onChange={(e) => setPassword(e.currentTarget.value)}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type={"password"} placeholder="Digite seu password" />
-                    </div>
-                </div> 
-
-                <div className="flex flex-col gap-2 text-center">
-                    <p className="text-2xl text-red-900">{error}</p>
-                </div>
-
-                <div className="flex w-full items-center justify-center gap-4">
-                    <div className="flex w-full items-center justify-center gap-4">
-                        <button onClick={CreateUser} className="border-2 border-primaryColor rounded-lg px-3 py-2 text-primaryColor hover:bg-secundaryColor">
-                            CRIAR CONTA
-                        </button>
-
-                        <button onClick={setLoginTrue} className="border-2 border-primaryColor rounded-lg px-3 py-2 text-primaryColor hover:bg-secundaryColor">
-                            VOLTAR
-                        </button>
-                    </div>
-                </div>
-            </main> 
+                <LoginUserModal
+                LoginUser={LoginUser}
+                error={error}
+                lock={lock}
+                login={login}
+                password={password}
+                setLock={setLock}
+                setLoginFalse={setLoginFalse}
+                setLoginTrue={setLoginTrue}
+                setPassword={setPassword}
+                setTaxNumber={setTaxNumber}
+                taxNumber={taxNumber}
+                />
+            :
+                <CreateNewUserModal
+                CreateUser={CreateUser}
+                error={error}
+                lock={lock}
+                setLock={setLock}
+                setLoginFalse={setLoginFalse}
+                setLoginTrue={setLoginTrue}
+                setPassword={setPassword}
+                setTaxNumber={setTaxNumber}
+                mail={mail}
+                name={name}
+                password={password}
+                phone={phone}
+                taxNumber={taxNumber}
+                setName={setName}
+                setMail={setMail}
+                setPhone={setPhone}
+                />
             }
 
         </div>
