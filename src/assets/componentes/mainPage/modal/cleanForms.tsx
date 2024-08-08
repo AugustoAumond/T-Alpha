@@ -1,4 +1,4 @@
-export default function CleanForms(
+export default function CleamForms(
     setNameEdit: (e: string) => void, 
     setPriceEdit: (e: number) => void, 
     setStockEdit: (e: number) => void, 

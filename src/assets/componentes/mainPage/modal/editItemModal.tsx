@@ -4,7 +4,7 @@ import { api } from "../../../../materials/axios/axios"
 import { CgClose } from "react-icons/cg"
 import Input from "../../../../materials/input/input"
 import Button from "../../../../materials/button/button"
-import CleanForms from "./CleanForms"
+import CleamForms from "./CleanForms"
 
 
 interface ModalProps{
@@ -34,7 +34,7 @@ name, price, description, CloseModal, id, stock
     function CloseEdit(){
         setEdit(false)
 
-        CleanForms( setNameEdit, setPriceEdit, setStockEdit, setDescriptionEdit, name, price, description, stock)
+        CleamForms( setNameEdit, setPriceEdit, setStockEdit, setDescriptionEdit, name, price, description, stock)
     }
 
     function ChangePrice(value: number){

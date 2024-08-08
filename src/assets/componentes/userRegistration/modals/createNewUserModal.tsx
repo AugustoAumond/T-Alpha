@@ -4,7 +4,7 @@ import { CreatUserProps } from "../../../Interfaces/Interfaces"
 import { MdEmail } from "react-icons/md"
 import { IMaskInput } from "react-imask"
 import Button from "../../../../materials/button/button"
-import { useState } from "react"
+
 
 interface CreateNewUserProps extends CreatUserProps{
     setLoginTrue: () => void
