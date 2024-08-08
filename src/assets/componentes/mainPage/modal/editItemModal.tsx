@@ -45,10 +45,17 @@ name, price, description, CloseModal, id, stock
     function ChangePrice(value: number){
         const newPrice = value.toString().split('');
         const cont = newPrice?.length;
-        if (cont) {
+
+        if (cont === 3) {
+            newPrice.splice(cont-1, 0,'.');
+            return (newPrice.join(''))
+        } else if (cont > 3) {
             newPrice.splice(cont-2, 0,'.');
-
-
+            return (newPrice.join(''))
+        } else if (cont < 3){
+            newPrice.push('.');
+            newPrice.push('0');
+            newPrice.push('0')
             return (newPrice.join(''))
         }
     }
@@ -135,7 +142,8 @@ name, price, description, CloseModal, id, stock
                 :               
                 <Input>
                     <p className="text-lg text-primaryColor">PREÇO</p>
-                    <input value={priceEdit} onChange={(e) => setPriceEdit(parseInt(e.currentTarget.value))}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="number" placeholder="Preço do produto" />
+                    
+                    <input value={priceEdit} onChange={(e) => setPriceEdit(parseFloat(e.currentTarget.value))}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="number" placeholder="Preço do produto" />
                 </Input>
                 }
 

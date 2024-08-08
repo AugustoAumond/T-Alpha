@@ -65,9 +65,23 @@ export default function MainPage(){
     function ChangePrice(value: number){
         const newPrice = value.toString().split('');
         const cont = newPrice?.length;
-        if (cont) {
+
+        if (cont === 3) {
+
+            newPrice.splice(cont-1, 0,'.');
+
+
+            return (newPrice.join(''))
+        } else if (cont > 3) {
+
             newPrice.splice(cont-2, 0,'.');
 
+
+            return (newPrice.join(''))
+        } else if (cont < 3){
+            newPrice.push('.');
+            newPrice.push('0');
+            newPrice.push('0')
             return (newPrice.join(''))
         }
     }

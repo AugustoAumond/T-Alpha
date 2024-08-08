@@ -11,8 +11,8 @@ interface CreateProductProps {
 export default function CreateNewProductModal({CloseCreateNewProduct}: CreateProductProps){
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [price, setPrice] = useState<number | undefined>(undefined);
-    const [stock, setStock] = useState<number | undefined>(undefined);
+    const [price, setPrice] = useState<number | undefined | ''>('');
+    const [stock, setStock] = useState<number | undefined | ''>('');
     const [error, setError] = useState('');
     const [end, setEnd] = useState(false);
 
@@ -80,7 +80,7 @@ export default function CreateNewProductModal({CloseCreateNewProduct}: CreatePro
                     <div className="flex items-center justify-center gap-5">
                         <Input>
                             <p className="text-sm  sm:text-lg text-primaryColor">PREÇO:</p>
-                            <input onFocus={() => setError('')} value={price} onChange={(e) => setPrice(parseInt(e.currentTarget.value))} className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="number" placeholder="Preço do produto" />
+                            <input onFocus={() => setError('')} value={price} onChange={(e) => setPrice(parseFloat(e.currentTarget.value))} className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="number" placeholder="Preço do produto" />
                         </Input>
 
                         <Input>
