@@ -10,11 +10,10 @@ function App() {
 
   useEffect(()=>{
     setToken(localStorage.getItem('token'))
-    console.log(token)
   })
 
   return (
-    <div className='w-full h-full'>
+    <div className='flex w-full min-h-full p-2 bg-primaryColor '>
 
       {token === null ? 
         <UserRegistration setToken={setToken}/> :

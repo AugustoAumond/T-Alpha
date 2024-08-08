@@ -4,6 +4,8 @@ import { api } from "../../../../materials/axios/axios"
 import { CgClose } from "react-icons/cg"
 import Input from "../../../../materials/input/input"
 import Button from "../../../../materials/button/button"
+import CleanForms from "./CleanForms"
+
 
 interface ModalProps{
     name?: string
@@ -20,8 +22,10 @@ name, price, description, CloseModal, id, stock
     const [edit, setEdit] = useState(false);
     const [nameEdit, setNameEdit] = useState<string | undefined>(name)
     const [descriptionEdit, setDescriptionEdit] = useState<string | undefined>(description)
-    const [priceEdit, setPriceEdit] = useState<number| undefined>(price)
-    const [stockEdit, setStockEdit] = useState<number | undefined>(stock)
+    const [priceEdit, setPriceEdit] = useState<number | undefined | ''>(price)
+    const [stockEdit, setStockEdit] = useState<number | undefined | ''>(stock)
+    const [endDelete, setEndDelete] = useState(false);
+    const [endEdite, setEndEdite] = useState(false);
 
     function OpenEdit(){
         setEdit(true);
@@ -29,6 +33,8 @@ name, price, description, CloseModal, id, stock
 
     function CloseEdit(){
         setEdit(false)
+
+        CleanForms( setNameEdit, setPriceEdit, setStockEdit, setDescriptionEdit, name, price, description, stock)
     }
 
     function ChangePrice(value: number){
@@ -47,17 +53,24 @@ name, price, description, CloseModal, id, stock
 
         if (token !== undefined && id ){
 
-            console.log( nameEdit, descriptionEdit, priceEdit, stock, id)
+            console.log( nameEdit, descriptionEdit, priceEdit, stockEdit, id)
 
             await api.patch(`/api/products/update-product/${id}`, {
-                name: nameEdit, description: descriptionEdit ,price: priceEdit, stock: stock
+                name: nameEdit, description: descriptionEdit ,price: priceEdit, stock: stockEdit
             },{
                 headers: {
                     'Authorization': `Bearer ${token.replaceAll('"', '')}`
                 }
             })
 
-            CloseModal();
+            setEndEdite(true);
+
+            setTimeout(()=>{
+                CloseModal();
+
+                setEndEdite(false);
+            }, 3000)
+
         }
     }
 
@@ -65,25 +78,27 @@ name, price, description, CloseModal, id, stock
         const token = JSON.stringify(localStorage.getItem('token'))
 
         if (token !== undefined){
-
-            console.log( nameEdit, descriptionEdit, priceEdit, stock, id)
-            console.log(`/api/products/delete-product/${id}`)
-
             await api.delete(`/api/products/delete-product/${id}`,{
                 headers: {
                     'Authorization': `Bearer ${token.replaceAll('"', '')}`
                 }
             })
 
-            CloseModal();
+            setEndDelete(true);
+
+            setTimeout(()=>{
+                CloseModal();
+
+                setEndDelete(false);
+            }, 3000)
         }
     }
 
 
 
     return (
-        <div className="fixed h-full w-full flex items-center justify-center bg-primaryColor bg-opacity-80">
-            <div className="relative w-[400px] h-[500px] bg-secundaryColor rounded-lg flex flex-col items-center p-5 gap-8">
+        <div className="fixed top-0 h-full w-full flex items-center justify-center bg-primaryColor bg-opacity-80">
+            <div className="relative w-[90%] max-w-[400px] h-[500px] bg-secundaryColor rounded-lg flex flex-col items-center p-5 gap-8">
 
                 <div onClick={CloseModal} className="absolute right-4 top-4 text-primaryColor">
                     <CgClose></CgClose>
@@ -91,11 +106,11 @@ name, price, description, CloseModal, id, stock
 
 
                 {edit === false ? 
-                    <div className="text-primaryColor text-2xl">{name}</div> 
+                    <div className="text-primaryColor text-2xl text-center">{name}</div> 
                 :
                 <Input>
                     <p className="text-lg text-primaryColor">NOME</p>
-                    <input value={nameEdit} onChange={(e) => setNameEdit(e.currentTarget.value)}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="text" placeholder="Nome do produto" />
+                    <input value={nameEdit} onChange={(e) => setNameEdit(e.currentTarget.value)}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="text" maxLength={35} placeholder="Nome do produto" />
                 </Input>
                 }
 
@@ -105,17 +120,17 @@ name, price, description, CloseModal, id, stock
                 </div>
                 :
                 <Input>
-                    <p className="text-lg text-primaryColor">ESTOQUE</p>
-                    <input value={stockEdit} onChange={(e) => setStockEdit(parseInt(e.currentTarget.value))}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="number" placeholder="Nome do produto" />
-                </Input>
+                    <p className="text-lg text-primaryColor">DESCRIÇÃO</p>
+                    <input value={descriptionEdit} onChange={(e) => setDescriptionEdit(e.currentTarget.value)}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="text" maxLength={40} placeholder="Descrição do produto" />
+                </Input> 
                 }
         
                 {edit === false ? 
                     <p className="text-primaryColor text-lg">{description}</p>
-                :
+                :               
                 <Input>
-                    <p className="text-lg text-primaryColor">DESCRIÇÃO</p>
-                    <input value={descriptionEdit} onChange={(e) => setDescriptionEdit(e.currentTarget.value)}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="text" placeholder="Descrição do produto" />
+                    <p className="text-lg text-primaryColor">PREÇO</p>
+                    <input value={priceEdit} onChange={(e) => setPriceEdit(parseInt(e.currentTarget.value))}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="number" placeholder="Preço do produto" />
                 </Input>
                 }
 
@@ -123,8 +138,8 @@ name, price, description, CloseModal, id, stock
                     <p className="text-primaryColor text-lg">R$: {ChangePrice(price ? price : 0)}</p>
                 :
                 <Input>
-                    <p className="text-lg text-primaryColor">PREÇO</p>
-                    <input value={priceEdit} onChange={(e) => setPriceEdit(parseInt(e.currentTarget.value))}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="number" placeholder="Preço do produto" />
+                    <p className="text-lg text-primaryColor">ESTOQUE</p>
+                    <input value={stockEdit} onChange={(e) => setStockEdit(parseInt(e.currentTarget.value))}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2" type="number" placeholder="Nome do produto" />
                 </Input>
                 }
 
@@ -149,10 +164,23 @@ name, price, description, CloseModal, id, stock
                         VOLTAR
                     </Button>
                 }
-
-                
                 </div>
+
+                {endDelete && (
+                <div className="absolute top-0 w-[100%] h-[100%] bg-secundaryColor rounded-lg flex flex-col items-center justify-center p-5 gap-8">
+                    <h1 className="text-3xl text-primaryColor text-center">PRODUTO EXCLUIDO! </h1>
+                </div>
+                )}
+
+                {endEdite && (
+                <div className="absolute top-0 w-[100%] h-[100%] bg-secundaryColor rounded-lg flex flex-col items-center justify-center p-5 gap-8">
+                    <h1 className="text-3xl text-primaryColor text-center">PRODUTO ALTERADO COM SUCESSO! </h1>
+                </div>
+                )}
+
             </div>
+
+            
         </div>  
     )
 }

@@ -6,7 +6,7 @@ interface ButtonProps extends ComponentProps<'button'>{
 
 export default function Button({children, ...props}: ButtonProps){
     return (
-        <button {...props}  className="border-2 border-primaryColor rounded-lg px-3 py-2 text-primaryColor hover:bg-secundaryColor">
+        <button {...props}  className="border-2 border-primaryColor rounded-lg px-3 py-2 text-primaryColor hover:bg-primaryColor hover:text-terciaryColor">
             {children}
         </button>
     )

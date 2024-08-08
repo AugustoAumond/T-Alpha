@@ -4,6 +4,7 @@ import { CreatUserProps } from "../../../Interfaces/Interfaces"
 import { MdEmail } from "react-icons/md"
 import { IMaskInput } from "react-imask"
 import Button from "../../../../materials/button/button"
+import { useState } from "react"
 
 interface CreateNewUserProps extends CreatUserProps{
     setLoginTrue: () => void
@@ -17,6 +18,7 @@ interface CreateNewUserProps extends CreatUserProps{
     CreateUser: () => Promise<void>
     setPassword: (e: string) => void
     error: string
+    end: boolean
 }
 
 export default function CreateNewUserModal({
@@ -35,10 +37,12 @@ export default function CreateNewUserModal({
     phone,
     taxNumber,
     setPassword,
-    error
+    error,
+    end
     }: CreateNewUserProps) {
+        
     return (
-        <main className="w-full h-full max-w-[500px] max-h-[850px] bg-terciaryColor rounded-lg p-6 flex flex-col items-center gap-8">
+        <main className="relative w-[90%] max-w-[500px] max-h-[850px] bg-terciaryColor rounded-lg p-6 flex flex-col items-center gap-8">
             <p className="text-2xl text-primaryColor">
                 CRIE SUA CONTA              
             </p>
@@ -46,11 +50,11 @@ export default function CreateNewUserModal({
             <div className="flex w-full items-center justify-center gap-4">
 
                 <div className="flex w-full items-center justify-center gap-6">
-                    <button onClick={setLoginTrue} className="text-lg text-primaryColor">
+                    <button onClick={setLoginTrue} className="text-sm  sm:text-lg text-primaryColor">
                         SIGN IN
                     </button>
 
-                    <button onClick={setLoginFalse} className="text-lg text-primaryColor">
+                    <button onClick={setLoginFalse} className="text-sm  sm:text-lg text-primaryColor">
                         <strong> SIGN UP </strong>
                         <div className="border-b-2 border-primaryColor"></div>
                     </button>
@@ -60,48 +64,48 @@ export default function CreateNewUserModal({
 
             <div className="flex flex-col w-full gap-4">
                 <Input>
-                    <p className="text-lg text-primaryColor">NOME:</p>
+                    <p className="text-sm  sm:text-lg text-primaryColor">NOME:</p>
 
-                    <div className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
+                    <div className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
                         <FaUser className="text-terciaryColor"></FaUser>
-                        <input value={name} onChange={(e) => setName(e.target.value)} className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type="text" placeholder="Digite seu nome" />
+                        <input value={name} onChange={(e) => setName(e.target.value)} className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type="text" placeholder="Digite seu nome" />
                     </div>
                 </Input>
 
                 <Input>
-                    <p className="text-lg text-primaryColor">CPF</p>
+                    <p className="text-sm  sm:text-lg text-primaryColor">CPF</p>
 
-                    <div className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
+                    <div className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
                         <FaIdCard className="text-terciaryColor"></FaIdCard>
-                        <IMaskInput value={taxNumber}  onChange={(e) => setTaxNumber(e.currentTarget.value)} mask={'000.000.000-00'}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type="text" maxLength={14} placeholder="000.000.000-00"/> 
+                        <IMaskInput value={taxNumber}  onChange={(e) => setTaxNumber(e.currentTarget.value)} mask={'000.000.000-00'}  className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type="text" maxLength={14} placeholder="000.000.000-00"/> 
                     </div>
                 </Input>
 
                 <Input>
-                    <p className="text-lg text-primaryColor">EMAIL:</p>
+                    <p className="text-sm  sm:text-lg text-primaryColor">EMAIL:</p>
 
-                    <div className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
+                    <div className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
                         <MdEmail className="text-terciaryColor"></MdEmail>
-                        <input value={mail} onChange={(e) => setMail(e.target.value)} className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type="text" placeholder="Digite seu email" />
+                        <input value={mail} onChange={(e) => setMail(e.target.value)} className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type="text" placeholder="Digite seu email" />
                     </div>
                 </Input>
 
                 <Input>
-                    <p className="text-lg text-primaryColor">TELEFONE:</p>
+                    <p className="text-sm  sm:text-lg text-primaryColor">TELEFONE:</p>
 
-                    <div className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
+                    <div className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
                         <FaPhone className="text-terciaryColor"></FaPhone>
-                        <IMaskInput value={phone} onChange={(e) => setPhone(e.currentTarget.value)}  className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type="text" maxLength={16} mask={'(00) 0 0000-0000'} placeholder="(00) 0 0000 0000" />
+                        <IMaskInput value={phone} onChange={(e) => setPhone(e.currentTarget.value)}  className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type="text" maxLength={16} mask={'(00) 0 0000-0000'} placeholder="(00) 0 0000 0000" />
                     </div>
                 </Input>
 
                 <Input>
-                    <p className="text-lg text-primaryColor">PASSWORD:</p>
+                    <p className="text-sm  sm:text-lg text-primaryColor">PASSWORD:</p>
 
-                    <div className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
+                    <div className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex gap-2 items-center">
                         {lock === true ?  <FaLock onClick={() => setLock(false)} className="text-terciaryColor"></FaLock > : <FaLockOpen onClick={() => setLock(true)} className="text-terciaryColor"></FaLockOpen>}
         
-                        <input value={password}  onChange={(e) => setPassword(e.currentTarget.value)} className="text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type={lock === true ? 'password' : 'text'} placeholder="Digite sua senha" />
+                        <input value={password}  onChange={(e) => setPassword(e.currentTarget.value)} className="text-sm  sm:text-lg text-black rounded-lg bg-primaryColor p-1 space-x-2 flex flex-1" type={lock === true ? 'password' : 'text'} placeholder="Digite sua senha" />
                     </div>
                 </Input>
             </div> 
@@ -121,6 +125,13 @@ export default function CreateNewUserModal({
                     </Button>
                 </div>
             </div>
+
+            {end &&
+                <main className="absolute top-0 w-full max-w-[500px] h-full max-h-[850px] bg-terciaryColor rounded-lg p-6 flex flex-col items-center gap-8">
+                        <h1 className="text-3xl text-primaryColor text-center">USUÁRIO CRIADO COM SUCESSO! </h1>
+                </main>
+            }
+            
         </main> 
     )
 }

@@ -2,13 +2,6 @@ import { useEffect, useState } from "react";
 import { api } from "../../../materials/axios/axios";
 import { CleanForms} from "./cleanForms";
 
-import { FaIdCard, FaLock, FaLockOpen, FaPhone, FaUser } from "react-icons/fa";
-
-import {IMaskInput } from "react-imask";
-import { MdEmail } from "react-icons/md";
-
-import Input from "../../../materials/input/input";
-import Button from "../../../materials/button/button";
 import CreateNewUserModal from "./modals/createNewUserModal";
 import LoginUserModal from "./modals/loginUserModal";
 
@@ -26,6 +19,7 @@ export function UserRegistration({
     const [phone, setPhone] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [lock, setLock] = useState(true)
+    const [end, setEnd] = useState(false)
 
     const [error, setError] = useState<string>('')
 
@@ -69,11 +63,13 @@ export function UserRegistration({
             return (setError('Digite um Email válido.'));
         }
 
-        if (phone){
-            if (phone?.toString().length < 11){
-                return (setError('Telfone inválido!'));
+        if (phone === undefined){
+            return (setError('Telfone inválido!'))
+            }else {
+                if (phone?.toString().length < 11){
+                    return (setError('Telfone inválido!'));
+                }
             }
-        }
 
         if (password?.toString().length < 6){
             return (setError('Password deve conter no mínimo 6 números!'));
@@ -87,6 +83,14 @@ export function UserRegistration({
             password
         }).then(()=> {
             CleanForms(setName, setTaxNumber, setPhone, setPassword, setMail, setError) 
+
+            setEnd(true);
+
+            setTimeout(()=>{
+                setEnd(false);
+
+                setLoginTrue();
+            }, 3000)
         }) 
         .catch(function (error) {
             // handle error
@@ -94,6 +98,10 @@ export function UserRegistration({
                 setError(error.response.data.message)
             }
         })
+
+        setTimeout(()=>{
+            localStorage.removeItem('token')    
+        }, 1800000)
     }
 
     async function LoginUser(){
@@ -116,9 +124,6 @@ export function UserRegistration({
             localStorage.setItem('token',  e.data.data.token.toString())  
             setToken(e.data.data.token.toString())     
 
-            setTimeout(()=>{
-                localStorage.removeItem('token')    
-            }, 600000)
         })
         .catch(function (error) {
             // handle error
@@ -127,7 +132,7 @@ export function UserRegistration({
     }
 
     return (
-        <div className="bg-primaryColor h-full flex items-center justify-center p-18"> 
+        <div className="bg-primaryColor flex w-full items-center justify-center p-18"> 
             {login === true ?
                 <LoginUserModal
                 LoginUser={LoginUser}
@@ -160,6 +165,7 @@ export function UserRegistration({
                 setName={setName}
                 setMail={setMail}
                 setPhone={setPhone}
+                end={end}
                 />
             }
 

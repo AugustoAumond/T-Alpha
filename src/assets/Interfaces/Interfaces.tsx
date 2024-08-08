@@ -7,9 +7,9 @@ export interface CreatUserProps {
 }
 
 export interface ObjectProps {
-    name: string | undefined,
-    description: string | undefined
-    price: number | undefined
-    stock?: number | undefined
-    id?: number | undefined
+    name?: string
+    description?: string
+    price?: number
+    stock?: number
+    id?: number
 }
