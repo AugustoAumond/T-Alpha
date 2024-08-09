@@ -74,6 +74,10 @@ export function UserRegistration({
         if (password?.toString().length < 6){
             return (setError('Password deve conter no mínimo 6 números!'));
         }
+
+        setTimeout(()=>{
+            localStorage.removeItem('token')    
+        }, 1800000)
     
         await api.post('/api/auth/register',{
             name, 
@@ -98,10 +102,6 @@ export function UserRegistration({
                 setError(error.response.data.message)
             }
         })
-
-        setTimeout(()=>{
-            localStorage.removeItem('token')    
-        }, 1800000)
     }
 
     async function LoginUser(){

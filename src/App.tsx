@@ -14,13 +14,10 @@ function App() {
 
   return (
     <div className='flex w-full min-h-full p-2 bg-primaryColor '>
-
       {token === null ? 
         <UserRegistration setToken={setToken}/> :
         <MainPage />
       }
-
-
     </div>
   )
 }
